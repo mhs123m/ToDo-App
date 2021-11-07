@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">ToDoListProject</string>
+    <string name="app_name">ToDoApp</string>
+    <string name="create_an_account_in">Create An Account in</string>
+    <string name="app_name_todo_manager">ToDo Manager</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="welcome_to">Welcome To</string>
+    <string name="log_in">Log In</string>
+    <string name="google">G</string>
+    <string name="facebook">f</string>
+    <string name="registrationSucceded">Registration Succeeded</string>
+    <string name="failuar">\"Registration failed: \"</string>
 </resources>

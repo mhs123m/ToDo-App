@@ -1,0 +1,62 @@
+package com.twq.todoapp
+
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        var auth = Firebase.auth
+
+        var loginEmail = findViewById<TextInputEditText>(R.id.editTextnputEmailLogin)
+        var loginPassword = findViewById<TextInputEditText>(R.id.editTextInputPasswordLogin)
+        var loginBtn = findViewById<Button>(R.id.buttonLogin)
+        var gLoginBtn = findViewById<Button>(R.id.buttonGoogleSinein)
+        var fLoginBtn = findViewById<Button>(R.id.buttonFacebookLogin)
+        var noAccountTextView = findViewById<TextView>(R.id.textViewNoAccountSignUp)
+
+        noAccountTextView.setOnClickListener {
+            var i = Intent(this, RegistrationActivity::class.java)
+
+            startActivity(i)
+        }
+
+        loginBtn.setOnClickListener {
+            var auth = Firebase.auth
+
+            if (loginEmail.text.toString().isNotEmpty()
+                && loginPassword.text.toString().isNotEmpty()
+            ) {
+
+
+                auth.signInWithEmailAndPassword(
+                    loginEmail.text.toString(), loginPassword.text.toString()
+                )
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            var user = auth.currentUser
+                            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT)
+                                .show()
+                            println("Login Success " + user?.uid)
+                        } else {
+
+                            Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                    }
+            }
+        }
+    }
+
+
+}

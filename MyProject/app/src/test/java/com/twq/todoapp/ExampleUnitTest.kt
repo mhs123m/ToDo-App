@@ -1,4 +1,4 @@
-package com.twq.todolistproject
+package com.twq.todoapp
 
 import org.junit.Test
 
