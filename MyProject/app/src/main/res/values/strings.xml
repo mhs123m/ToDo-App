@@ -14,4 +14,8 @@
     <string name="facebook">f</string>
     <string name="registrationSucceded">Registration Succeeded</string>
     <string name="failuar">\"Registration failed: \"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="task_title">Task Title</string>
+    <string name="description">Description</string>
 </resources>

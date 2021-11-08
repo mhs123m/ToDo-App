@@ -3,9 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/checked.xml" value="0.25885416666666666" />
+        <entry key="app/src/main/res/drawable/custom_checkbox.xml" value="0.25885416666666666" />
+        <entry key="app/src/main/res/drawable/unchecked.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/font/rubik.xml" value="0.27291666666666664" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.24270833333333333" />
+        <entry key="app/src/main/res/layout/custom_dialog_add_task.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_today.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/layout/fragment_week.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/layout/task_row.xml" value="0.45" />
+        <entry key="app/src/main/res/menu/tool_bar_mune.xml" value="0.24270833333333333" />
       </map>
     </option>
   </component>
