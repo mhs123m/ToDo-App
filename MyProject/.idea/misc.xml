@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/drawable/checked.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/drawable/custom_checkbox.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/drawable/unchecked.xml" value="0.25885416666666666" />

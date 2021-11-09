@@ -9,11 +9,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.twq.todoapp.Adapter.TodayAdapter
 import com.twq.todoapp.Model.ToDo
 import com.twq.todoapp.R
+import java.sql.Time
+import java.sql.Timestamp
+import java.util.*
 
 class TodayFragment : Fragment() {
 
@@ -27,24 +31,35 @@ class TodayFragment : Fragment() {
 
 
         var mRecyclerView = v.findViewById<RecyclerView>(R.id.mRecyclerView)
-        mRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        val db = Firebase.firestore
 
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "Lovelace",
-            "born" to 1815
-        )
+        var db = Firebase.firestore
+        var auth = Firebase.auth
+        db.collection("todos")
+            .document(auth.currentUser?.uid.toString())
+            .collection("todos1")
+            .get()
+            .addOnSuccessListener { task ->
+                var todoList = mutableListOf<ToDo>()
+                for (document in task) {
 
-// Add a new document with a generated ID
-        db.collection("tasks")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
+                    todoList.add(
+                        ToDo(
+                            document.id, document.getString("name")!!,
+                            document.getString("description")!!,
+                            (document.getString("date") as? Date).toString(),
+                            (document.getString("time") as? Timestamp).toString(),
+                            document.getBoolean("status")!!
+                        )
+                    )
+
+
+                }
+
+
+
+                mRecyclerView.layoutManager = LinearLayoutManager(context)
+                mRecyclerView.adapter = TodayAdapter(todoList)
             }
 
 
