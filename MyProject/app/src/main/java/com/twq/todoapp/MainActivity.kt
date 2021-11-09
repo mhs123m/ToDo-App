@@ -11,11 +11,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
+    private var auth = Firebase.auth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var auth = Firebase.auth
+
 
         var loginEmail = findViewById<TextInputEditText>(R.id.editTextnputEmailLogin)
         var loginPassword = findViewById<TextInputEditText>(R.id.editTextInputPasswordLogin)
@@ -44,9 +45,8 @@ class MainActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             var user = auth.currentUser
-                            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT)
-                                .show()
-                            println("Login Success " + user?.uid)
+                            var i = Intent(this,HomeActivity::class.java)
+                            startActivity(i)
                         } else {
 
                             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT)
@@ -57,6 +57,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
 }
