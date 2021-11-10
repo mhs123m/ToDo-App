@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -16,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.twq.todoapp.Adapter.TodayAdapter
 import com.twq.todoapp.Fragments.FragmentAdapter
 import com.twq.todoapp.Model.ToDo
 import java.sql.Time
@@ -23,9 +25,13 @@ import java.util.*
 import java.util.zip.Inflater
 
 class HomeActivity : AppCompatActivity() {
+    lateinit var todayAdapter: TodayAdapter
+    var todoList = mutableListOf<ToDo>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+
 
         var viewPager2 = findViewById<ViewPager2>(R.id.mViewPager2)
         var mTabLayout = findViewById<TabLayout>(R.id.mTabLayout)
@@ -44,6 +50,45 @@ class HomeActivity : AppCompatActivity() {
             tab.text = titles[position]
         }.attach()
 
+
+
+
+
+
+        var db = Firebase.firestore
+        var auth = Firebase.auth
+        db.collection("todos")
+            .document(auth.currentUser?.uid.toString())
+            .collection("todos1")
+            .get()
+            .addOnSuccessListener { task ->
+                todoList.clear()
+                for (document in task) {
+
+                    todoList.add(
+                        ToDo(
+                            document.id, document.getString("name"),
+                            document.getString("description"),
+                            document.getDate("date"),
+                            (document.getTimestamp("time")),
+                            document.getBoolean("status")!!
+                        )
+                    )
+
+
+                }
+
+
+
+
+//
+
+            }
+
+
+
+
+
         fabBtn.setOnClickListener {
             var customAddDialog = AlertDialog.Builder(this).create()
 
@@ -58,6 +103,7 @@ class HomeActivity : AppCompatActivity() {
 //            var imgViewClock = view.findViewById<ImageView>(R.id.imageViewAddDialogClockIcon)
 //            var imgViewLocation = view.findViewById<ImageView>(R.id.imageViewAddDialogLocationIcon)
 //            var imgViewFolder = view.findViewById<ImageView>(R.id.imageViewAddDialogFolderIcon)
+            var imgViewCloseDialogIcon = view.findViewById<ImageView>(R.id.imageViewCloseAddDialogIcon)
             var editTextDatePicker =
                 view.findViewById<TextInputEditText>(R.id.editTextInputDatePicked)
             var editTextTimePicker =
@@ -65,6 +111,10 @@ class HomeActivity : AppCompatActivity() {
             var spinnerRepeat = view.findViewById<Spinner>(R.id.spinnerRepeatAddDialog)
             var btnAddDialog = view.findViewById<Button>(R.id.buttonAddDialogAddTask)
 
+            //close dialog
+            imgViewCloseDialogIcon.setOnClickListener {
+                customAddDialog.dismiss()
+            }
             // spinner items
             var list = arrayOf("No Repeat", "Daily", "Weekly", "Monthly", "Yearly")
             spinnerRepeat.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
@@ -118,17 +168,23 @@ class HomeActivity : AppCompatActivity() {
                 val todo = hashMapOf(
                     "name" to editTextTaskTitle.text.toString(),
                     "description" to editTextTaskDescription.text.toString(),
-                    "dueDate" to Date(year, month, day).toString(),
-                    "time" to Time(hour, minute, 0).toString(),
+                    "dueDate" to Date(year, month, day),
+                    "time" to Time(hour, minute, 0),
                     "status" to false
 
                 )
 
+
 // Add a new document with a generated ID
+
                 db.collection("todos")
                     .document(auth.currentUser?.uid.toString())
                     .collection("todos1").document()
                     .set(todo)
+                    .addOnSuccessListener {
+                         todayAdapter = TodayAdapter(todoList,db)
+                        todayAdapter.notifyDataSetChanged()
+                    }
                     .addOnFailureListener { e ->
                         Toast.makeText(
                             this,
@@ -136,7 +192,11 @@ class HomeActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
+
                 customAddDialog.dismiss()
+
+
 
 
             }
