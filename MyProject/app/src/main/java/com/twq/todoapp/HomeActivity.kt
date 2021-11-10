@@ -14,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -44,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        var titles = arrayOf("Daily Tasks", "Weakly Tasks")
+        var titles = arrayOf("Done", "All TODOs","Pending")
 
         TabLayoutMediator(mTabLayout, viewPager2) { tab, position ->
             tab.text = titles[position]
@@ -69,8 +70,8 @@ class HomeActivity : AppCompatActivity() {
                         ToDo(
                             document.id, document.getString("name"),
                             document.getString("description"),
-                            document.getDate("date"),
-                            (document.getTimestamp("time")),
+                            null,
+                            null,
                             document.getBoolean("status")!!
                         )
                     )
@@ -168,8 +169,8 @@ class HomeActivity : AppCompatActivity() {
                 val todo = hashMapOf(
                     "name" to editTextTaskTitle.text.toString(),
                     "description" to editTextTaskDescription.text.toString(),
-                    "dueDate" to Date(year, month, day),
-                    "time" to Time(hour, minute, 0),
+                    "dueDate" to Timestamp(Date(year, month, day)),
+                    "time" to Timestamp(Date(year, month, day,hour,minute,0)),
                     "status" to false
 
                 )

@@ -6,14 +6,15 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class FragmentAdapter(Activity:FragmentActivity):FragmentStateAdapter(Activity) {
     override fun getItemCount(): Int {
-        return 2
+        return 3
     }
 
     override fun createFragment(position: Int): Fragment {
         when(position){
-            0 -> return TodayFragment()
-            1 -> return WeekFragment()
+            0 -> return DoneFragment()
+            1 -> return AllToDoFragment()
+            2 -> return PendingFragment()
         }
-        return TodayFragment()
+        return AllToDoFragment()
     }
 }

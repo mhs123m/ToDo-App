@@ -1,13 +1,13 @@
 package com.twq.todoapp.Fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.twq.todoapp.R
 
-class WeekFragment : Fragment() {
+class PendingFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -15,7 +15,7 @@ class WeekFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_week, container, false)
+        var v = inflater.inflate(R.layout.fragment_pending, container, false)
         return v
     }
 

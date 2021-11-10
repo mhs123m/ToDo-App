@@ -121,7 +121,7 @@ class TodayAdapter(var data: MutableList<ToDo>, var db: FirebaseFirestore) : Rec
             var updated = mapOf(
                 "name" to editTextTaskTitleEditDialog.text.toString(),
                 "description" to editTextTaskDescriptionEditDialog.text.toString(),
-                "date" to editTextDatePickerEditDialog.text.toString(),
+                "dueDate" to editTextDatePickerEditDialog.text.toString(),
                 "time" to editTextTimePickerEditDialog.text.toString(),
 
             )
@@ -155,7 +155,7 @@ class TodayAdapter(var data: MutableList<ToDo>, var db: FirebaseFirestore) : Rec
 ////                            ToDo(
 ////                                document.id, document.getString("name")!!,
 ////                                document.getString("description")!!,
-////                                (document.getString("date") as? Date).toString(),
+////                                (document.getString("dueDate") as? Date).toString(),
 ////                                (document.getString("time") as? Timestamp).toString(),
 ////                                document.getBoolean("status")!!
 ////                            )

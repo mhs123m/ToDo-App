@@ -27,8 +27,8 @@ class HomeViewModel() : ViewModel() {
                             document.id,
                             document.getString("name"),
                             document.getString("description"),
-                            document.getDate("date"),
-                            document.getTimestamp("time"),
+                            null,
+                            null,
                             document.getBoolean("status")!!
                         )
                     )
