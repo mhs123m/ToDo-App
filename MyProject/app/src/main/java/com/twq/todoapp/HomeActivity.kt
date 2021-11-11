@@ -7,7 +7,10 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
         var viewPager2 = findViewById<ViewPager2>(R.id.mViewPager2)
         var mTabLayout = findViewById<TabLayout>(R.id.mTabLayout)
         var fabBtn = findViewById<FloatingActionButton>(R.id.mfloatingActionButton)
+        var mToolBar = findViewById<Toolbar>(R.id.mToolBar)
 
         var titles = arrayOf("Done", "All TODOs","Pending")
         viewPager2.adapter = FragmentAdapter(this)
@@ -44,30 +48,13 @@ class HomeActivity : AppCompatActivity() {
             tab.text = titles[position]
         }.attach()
 
-        var db = Firebase.firestore
-        var auth = Firebase.auth
-        db.collection("todos")
-            .document(auth.currentUser?.uid.toString())
-            .collection("todos1")
-            .get()
-            .addOnSuccessListener { task ->
-                todoList.clear()
-                for (document in task) {
+// to tell the app mToolBar is the main toolbar
+        setSupportActionBar(mToolBar)
 
-                    todoList.add(
-                        ToDo(
-                            document.id, document.getString("name"),
-                            document.getString("description"),
-                            null,
-                            null,
-                            document.getBoolean("status")!!
-                        )
-                    )
+        mToolBar.title = "ToDo M"
 
 
-                }
 
-            }
 
         fabBtn.setOnClickListener {
             var customAddDialog = AlertDialog.Builder(this).create()
@@ -181,6 +168,28 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.tool_bar_mune, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+    // listener
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId){
+            R.id.toolbarSetting -> {
+                val settingIntent: Intent = Intent()
+
+
+
+                startActivity(settingIntent)
+            }
+            R.id.toolbarSearch -> {
+                Toast.makeText(this, "filter was clicked", Toast.LENGTH_SHORT).show()
+            }
+            R.id.toolbarSort -> {}
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

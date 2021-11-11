@@ -56,8 +56,6 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
 
             if (buttonView.isChecked) {
                 var db = Firebase.firestore
-//                var database = Firebase.database
-//                var myRef = database.getReference("tod")
                 var auth = Firebase.auth
 
                 val todo = mapOf(
@@ -67,8 +65,6 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
                     .collection("todos1").document(data[position].id!!).update(todo)
             } else {
                 var db = Firebase.firestore
-//                var database = Firebase.database
-//                var myRef = database.getReference("tod")
                 var auth = Firebase.auth
 
                 val todo = mapOf(
