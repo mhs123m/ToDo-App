@@ -24,7 +24,11 @@ import java.sql.Timestamp
 import java.util.*
 import java.util.zip.Inflater
 
-class TodayAdapter(var data: MutableList<ToDo>, var db: FirebaseFirestore) : RecyclerView.Adapter<TodayHolder>() {
+
+
+
+
+class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodayHolder {
 
         var v = LayoutInflater.from(parent.context).inflate(R.layout.task_row, parent, false)
@@ -78,8 +82,8 @@ class TodayAdapter(var data: MutableList<ToDo>, var db: FirebaseFirestore) : Rec
                         println("ops ")
                     }
             }
-        }
 
+        }
 
         holder.itemView.setOnClickListener {
 

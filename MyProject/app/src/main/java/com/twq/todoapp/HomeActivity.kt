@@ -36,25 +36,13 @@ class HomeActivity : AppCompatActivity() {
 
         var viewPager2 = findViewById<ViewPager2>(R.id.mViewPager2)
         var mTabLayout = findViewById<TabLayout>(R.id.mTabLayout)
-
         var fabBtn = findViewById<FloatingActionButton>(R.id.mfloatingActionButton)
 
-
-        viewPager2.adapter = FragmentAdapter(this)
-
-
-
-
         var titles = arrayOf("Done", "All TODOs","Pending")
-
+        viewPager2.adapter = FragmentAdapter(this)
         TabLayoutMediator(mTabLayout, viewPager2) { tab, position ->
             tab.text = titles[position]
         }.attach()
-
-
-
-
-
 
         var db = Firebase.firestore
         var auth = Firebase.auth
@@ -79,16 +67,7 @@ class HomeActivity : AppCompatActivity() {
 
                 }
 
-
-
-
-//
-
             }
-
-
-
-
 
         fabBtn.setOnClickListener {
             var customAddDialog = AlertDialog.Builder(this).create()
@@ -183,8 +162,8 @@ class HomeActivity : AppCompatActivity() {
                     .collection("todos1").document()
                     .set(todo)
                     .addOnSuccessListener {
-                         todayAdapter = TodayAdapter(todoList,db)
-                        todayAdapter.notifyDataSetChanged()
+                         todayAdapter = TodayAdapter(todoList)
+//                        todayAdapter.notifyDataSetChanged()
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(
@@ -194,18 +173,13 @@ class HomeActivity : AppCompatActivity() {
                         ).show()
                     }
 
-
                 customAddDialog.dismiss()
-
-
-
 
             }
             customAddDialog.setCanceledOnTouchOutside(true)
             customAddDialog.show()
 
         }
-
 
     }
 }

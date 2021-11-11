@@ -58,7 +58,7 @@ class AllToDoFragment : Fragment() {
 
 
 
-                var todayAdapter = TodayAdapter(todoList, db)
+                var todayAdapter = TodayAdapter(todoList)
                 mRecyclerView.adapter = todayAdapter
 
 //                mRecyclerView.notify

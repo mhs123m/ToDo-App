@@ -13,6 +13,8 @@
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/custom_dialog_add_task.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_dialog_edit_task.xml" value="0.24270833333333333" />
+        <entry key="app/src/main/res/layout/fragment_alltodo.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_done.xml" value="0.1648148148148148" />
         <entry key="app/src/main/res/layout/fragment_pending.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/fragment_today.xml" value="0.22864583333333333" />
         <entry key="app/src/main/res/layout/fragment_week.xml" value="0.22864583333333333" />

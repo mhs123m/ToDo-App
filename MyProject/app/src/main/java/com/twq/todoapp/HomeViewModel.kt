@@ -18,20 +18,22 @@ class HomeViewModel() : ViewModel() {
 
 
         db.collection("todos").document(auth.currentUser?.uid.toString())
-            .collection("todos1").get()
-            .addOnSuccessListener { result ->
+            .collection("todos1")
+            .addSnapshotListener { result, error ->
                 var todoList = mutableListOf<ToDo>()
-                for (document in result)
-                    todoList.add(
-                        ToDo(
-                            document.id,
-                            document.getString("name"),
-                            document.getString("description"),
-                            null,
-                            null,
-                            document.getBoolean("status")!!
+                if (result != null) {
+                    for (document in result)
+                        todoList.add(
+                            ToDo(
+                                document.id,
+                                document.getString("name"),
+                                document.getString("description"),
+                                null,
+                                null,
+                                document.getBoolean("status")!!
+                            )
                         )
-                    )
+                }
                 mutableLiveData.postValue(todoList)
             }
 
