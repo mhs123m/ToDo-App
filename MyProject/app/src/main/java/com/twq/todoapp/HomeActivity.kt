@@ -178,9 +178,7 @@ class HomeActivity : AppCompatActivity() {
 
         when (item.itemId){
             R.id.toolbarSetting -> {
-                val settingIntent: Intent = Intent()
-
-
+                val settingIntent: Intent = Intent(this,SettingsActivity::class.java)
 
                 startActivity(settingIntent)
             }
