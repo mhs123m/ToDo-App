@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -94,14 +95,15 @@ class HomeActivity : AppCompatActivity() {
             var month = c.get(Calendar.MONTH)
             var year = c.get(Calendar.YEAR)
 
-
+            var choosedDate = Date()
             editTextDatePicker.setOnClickListener {
 
 
                 var datePickerDialog = DatePickerDialog(
                     this,
-                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                        editTextDatePicker.setText("$dayOfMonth/${month + 1}/$year")
+                    DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                        editTextDatePicker.setText("$day/${month + 1}/$year")
+                        choosedDate = Date(year - 1900,month,day)
 
                     },
                     year,
@@ -113,10 +115,15 @@ class HomeActivity : AppCompatActivity() {
             // time picker dialog
             var hour = c.get(Calendar.HOUR_OF_DAY)
             var minute = c.get(Calendar.MINUTE)
+            var seconds = c.get(Calendar.SECOND)
+
+            var chosenTime:String
             editTextTimePicker.setOnClickListener {
                 var timePickerDialog = TimePickerDialog(this,
                     TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                         editTextTimePicker.setText("$hourOfDay:$minute")
+                        chosenTime = "$hourOfDay: $minute"
+
                     },
                     hour,
                     minute,
@@ -135,8 +142,9 @@ class HomeActivity : AppCompatActivity() {
                 val todo = hashMapOf(
                     "name" to editTextTaskTitle.text.toString(),
                     "description" to editTextTaskDescription.text.toString(),
-                    "dueDate" to Timestamp(Date(year, month, day)),
-                    "time" to Timestamp(Date(year, month, day,hour,minute,0)),
+                    "dueDate" to choosedDate,
+                    "creation" to (Date(year - 1900, month, day,hour,minute,seconds)),
+//                    "time" to com.twq.todoapp.Adapter.chosenTime,
                     "status" to false
 
                 )

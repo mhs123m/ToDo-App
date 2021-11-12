@@ -46,8 +46,8 @@ class AllToDoFragment : Fragment() {
                             ToDo(
                                 document.id, document.getString("name"),
                                 document.getString("description"),
-                                null,
-                                null,
+                                document.getDate("dueDate"),
+                                document.getDate("creation"),
                                 document.getBoolean("status")!!
                             )
                         )

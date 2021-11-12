@@ -23,9 +23,7 @@ import java.sql.Time
 import java.sql.Timestamp
 import java.util.*
 import java.util.zip.Inflater
-
-
-
+import kotlin.math.min
 
 
 class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHolder>() {
@@ -49,7 +47,7 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
         holder.textViewTitleRow.text = data[position].title
         holder.textViewDescriptionRow.text = data[position].description
         holder.textViewDueDateRow.text = data[position].dueDate.toString()
-//        holder.textViewTimeRow.text = data[position].time.toString()
+        holder.textViewTimeRow.text = data[position].creation.toString()
         holder.checkBox!!.isChecked = data[position].status
 
         holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -81,6 +79,8 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
 
         }
 
+
+
         holder.itemView.setOnClickListener {
 
             var customEditDialog = AlertDialog.Builder(holder.itemView.context).create()
@@ -94,19 +94,21 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
                 view.findViewById<TextInputEditText>(R.id.editTextInputTaskTitleEditDialog)
             var editTextTaskDescriptionEditDialog =
                 view.findViewById<TextInputEditText>(R.id.editTextInputDescriptionEditDialog)
-//            var imgViewCalender = view.findViewById<ImageView>(R.id.imageViewAddDialogCalanderIcon)
-//            var imgViewClock = view.findViewById<ImageView>(R.id.imageViewAddDialogClockIcon)
-//            var imgViewLocation = view.findViewById<ImageView>(R.id.imageViewAddDialogLocationIcon)
-//            var imgViewFolder = view.findViewById<ImageView>(R.id.imageViewAddDialogFolderIcon)
             var imgViewCloseDialogIconEditDialog =
                 view.findViewById<ImageView>(R.id.imageViewCloseEditDialogIcon)
             var editTextDatePickerEditDialog =
                 view.findViewById<TextInputEditText>(R.id.editTextInputDatePickedEditDialog)
             var editTextTimePickerEditDialog =
                 view.findViewById<TextInputEditText>(R.id.editTextInputTimePickedEditDialog)
-            //var spinnerRepeat = view.findViewById<Spinner>(R.id.spinnerRepeatAddDialog)
             var btnSaveDialog = view.findViewById<Button>(R.id.buttonSaveEditTaskDialog)
             var btnDeleteDialog = view.findViewById<Button>(R.id.buttonDeleteEditTask)
+
+            // set edit texts to the current info of
+
+            editTextTaskTitleEditDialog.setText(holder.textViewTitleRow.text)
+            editTextTaskDescriptionEditDialog.setText(holder.textViewDescriptionRow.text)
+            editTextDatePickerEditDialog.setText(holder.textViewDueDateRow.text)
+            editTextTimePickerEditDialog.setText(holder.textViewTimeRow.text)
 
 
             // set edit Texts with the current data from firebase
@@ -118,11 +120,57 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
             btnSaveDialog.setOnClickListener {
 
 
+                var c = Calendar.getInstance()
+                var year = c.get(Calendar.YEAR)
+                var month = c.get(Calendar.MONTH)
+                var day = c.get(Calendar.DAY_OF_MONTH)
+                var hour = c.get(Calendar.HOUR_OF_DAY)
+                var minute = c.get(Calendar.MINUTE)
+                var seconds = c.get(Calendar.SECOND)
+
+                var choosedDate = Date()
+                 var chosenTime:String
+                editTextDatePickerEditDialog.setOnClickListener {
+
+
+                    var datePickerDialog = DatePickerDialog(
+                        holder.itemView.context,
+                        DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                            editTextDatePickerEditDialog.setText("$day/${month + 1}/$year")
+                            choosedDate = Date(year - 1900,month,day)
+
+                        },
+                        year,
+                        month,
+                        day
+                    )
+                    datePickerDialog.show()
+                }
+                // time picker dialog
+
+
+
+//                editTextTimePickerEditDialog.setOnClickListener {
+//                    var timePickerDialog = TimePickerDialog(holder.itemView.context,
+//                        TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+//                            editTextTimePickerEditDialog.setText("$hourOfDay:$minute")
+//                            chosenTime = "$hourOfDay: $minute"
+//
+//                        },
+//                        hour,
+//                        minute,
+//                        true
+//                    )
+//                    timePickerDialog.show()
+//                }
+
             var updated = mapOf(
                 "name" to editTextTaskTitleEditDialog.text.toString(),
                 "description" to editTextTaskDescriptionEditDialog.text.toString(),
-                "dueDate" to editTextDatePickerEditDialog.text.toString(),
-                "time" to editTextTimePickerEditDialog.text.toString(),
+                "dueDate" to choosedDate, // change to chosen date
+//                "time" to chosenTime,
+                "status" to false,
+                "modified" to Date(year,month,day,hour, minute,seconds)
 
             )
             db.collection("todos").document(auth.currentUser?.uid.toString())
