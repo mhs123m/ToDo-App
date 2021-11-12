@@ -2,28 +2,19 @@ package com.twq.todoapp.Adapter
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.twq.todoapp.Model.ToDo
 import com.twq.todoapp.R
-import java.sql.Time
-import java.sql.Timestamp
 import java.util.*
-import java.util.zip.Inflater
-import kotlin.math.min
 
 
 class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHolder>() {
@@ -46,8 +37,6 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
     override fun onBindViewHolder(holder: TodayHolder, position: Int) {
         holder.textViewTitleRow.text = data[position].title
         holder.textViewDescriptionRow.text = data[position].description
-        holder.textViewDueDateRow.text = data[position].dueDate.toString()
-        holder.textViewTimeRow.text = data[position].creation.toString()
         holder.checkBox!!.isChecked = data[position].status
 
         holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -59,8 +48,8 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
                 val todo = mapOf(
                     "status" to true
                 )
-                db.collection("todos").document(auth.currentUser?.uid.toString())
-                    .collection("todos1").document(data[position].id!!).update(todo)
+                db.collection("currentUserTasks").document(auth.currentUser?.uid.toString())
+                    .collection("todos").document(data[position].id!!).update(todo)
             } else {
                 var db = Firebase.firestore
                 var auth = Firebase.auth
@@ -68,8 +57,8 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
                 val todo = mapOf(
                     "status" to false
                 )
-                db.collection("todos").document(auth.currentUser?.uid.toString())
-                    .collection("todos1").document(data[position].id!!).update(todo)
+                db.collection("currentUserTasks").document(auth.currentUser?.uid.toString())
+                    .collection("todos").document(data[position].id!!).update(todo)
                     .addOnSuccessListener {
                         println("hell yeah")
                     }.addOnFailureListener {
@@ -79,17 +68,36 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
 
         }
 
+        var c = Calendar.getInstance()
+        var year = c.get(Calendar.YEAR)
+        var month = c.get(Calendar.MONTH)
+        var day = c.get(Calendar.DAY_OF_MONTH)
+        var dueDate = data[position].dueDate
+        var monthOfDueDate = dueDate?.month?.plus(1)
+
+        // over due
+
+
+        if (dueDate != null) {
+            holder.textViewDueDateRow.text = ("Due: ${dueDate.date}" +
+                    "/$monthOfDueDate/${dueDate.year + 1900}")
+        } else holder.textViewDueDateRow.text = ""
+
+
+        // due today
 
 
         holder.itemView.setOnClickListener {
 
             var customEditDialog = AlertDialog.Builder(holder.itemView.context).create()
 
-            var view = LayoutInflater.from(holder.itemView.context).inflate(R.layout
-                .custom_dialog_edit_task,null,false)
-
-
+            var view = LayoutInflater.from(holder.itemView.context).inflate(
+                R.layout
+                    .custom_dialog_edit_task, null, false
+            )
             customEditDialog.setView(view)
+
+
             var editTextTaskTitleEditDialog =
                 view.findViewById<TextInputEditText>(R.id.editTextInputTaskTitleEditDialog)
             var editTextTaskDescriptionEditDialog =
@@ -108,143 +116,19 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
             editTextTaskTitleEditDialog.setText(holder.textViewTitleRow.text)
             editTextTaskDescriptionEditDialog.setText(holder.textViewDescriptionRow.text)
             editTextDatePickerEditDialog.setText(holder.textViewDueDateRow.text)
-            editTextTimePickerEditDialog.setText(holder.textViewTimeRow.text)
+
 
 
             // set edit Texts with the current data from firebase
-
-
-            //btn save changes
-            var db = Firebase.firestore
-            var auth = Firebase.auth
-            btnSaveDialog.setOnClickListener {
-
-
-                var c = Calendar.getInstance()
-                var year = c.get(Calendar.YEAR)
-                var month = c.get(Calendar.MONTH)
-                var day = c.get(Calendar.DAY_OF_MONTH)
-                var hour = c.get(Calendar.HOUR_OF_DAY)
-                var minute = c.get(Calendar.MINUTE)
-                var seconds = c.get(Calendar.SECOND)
-
-                var choosedDate = Date()
-                 var chosenTime:String
-                editTextDatePickerEditDialog.setOnClickListener {
-
-
-                    var datePickerDialog = DatePickerDialog(
-                        holder.itemView.context,
-                        DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                            editTextDatePickerEditDialog.setText("$day/${month + 1}/$year")
-                            choosedDate = Date(year - 1900,month,day)
-
-                        },
-                        year,
-                        month,
-                        day
-                    )
-                    datePickerDialog.show()
-                }
-                // time picker dialog
-
-
-
-//                editTextTimePickerEditDialog.setOnClickListener {
-//                    var timePickerDialog = TimePickerDialog(holder.itemView.context,
-//                        TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-//                            editTextTimePickerEditDialog.setText("$hourOfDay:$minute")
-//                            chosenTime = "$hourOfDay: $minute"
-//
-//                        },
-//                        hour,
-//                        minute,
-//                        true
-//                    )
-//                    timePickerDialog.show()
-//                }
-
-            var updated = mapOf(
-                "name" to editTextTaskTitleEditDialog.text.toString(),
-                "description" to editTextTaskDescriptionEditDialog.text.toString(),
-                "dueDate" to choosedDate, // change to chosen date
-//                "time" to chosenTime,
-                "status" to false,
-                "modified" to Date(year,month,day,hour, minute,seconds)
-
-            )
-            db.collection("todos").document(auth.currentUser?.uid.toString())
-                .collection("todos1")
-                .document(data[position].id!!).update(updated)
-
-                customEditDialog.dismiss()
-            }
-
-
-            // btn delete item
-
-            btnDeleteDialog.setOnClickListener {
-
-                db.collection("todos").document(auth.currentUser?.uid.toString())
-                    .collection("todos1").document(data[position].id!!).delete()
-
-                customEditDialog.dismiss()
-            }
-            // TODO: 11/9/21 ADD  // set edit Texts with the current data from firebase
-//            db.collection("todos")
-//                .document(auth.currentUser?.uid.toString())
-//                .collection("todos1")
-//                .get()
-//                .addOnSuccessListener { task ->
-//                    var todoList = mutableListOf<ToDo>()
-//                    for (document in task) {
-//
-////                        todoList.add(
-////                            ToDo(
-////                                document.id, document.getString("name")!!,
-////                                document.getString("description")!!,
-////                                (document.getString("dueDate") as? Date).toString(),
-////                                (document.getString("time") as? Timestamp).toString(),
-////                                document.getBoolean("status")!!
-////                            )
-////                        )
-//
-//                        editTextTaskTitleEditDialog.setText(document.getString("name"))
-//
-//
-//                    }
-//
-//
-//
-//
-//                }
-
-
-
-            //close dialog
-            imgViewCloseDialogIconEditDialog.setOnClickListener {
-                customEditDialog.dismiss()
-            }
-            // spinner items
-//            var list = arrayOf("No Repeat", "Daily", "Weekly", "Monthly", "Yearly")
-//            spinnerRepeat.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
-
-            //build the calender dialog
-
-            //date dialog
-            var c = Calendar.getInstance()
-            var day = c.get(Calendar.DAY_OF_MONTH)
-            var month = c.get(Calendar.MONTH)
-            var year = c.get(Calendar.YEAR)
-
-
+            var chosenDate = Date()
             editTextDatePickerEditDialog.setOnClickListener {
 
 
                 var datePickerDialog = DatePickerDialog(
-                    view.context,
-                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                        editTextDatePickerEditDialog.setText("$dayOfMonth/${month + 1}/$year")
+                    holder.itemView.context,
+                    DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                        editTextDatePickerEditDialog.setText("$day/${month + 1}/$year")
+                        chosenDate = Date(year, month, day)
 
                     },
                     year,
@@ -253,55 +137,53 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
                 )
                 datePickerDialog.show()
             }
-            // time picker dialog
-            var hour = c.get(Calendar.HOUR_OF_DAY)
-            var minute = c.get(Calendar.MINUTE)
-            editTextTimePickerEditDialog.setOnClickListener {
-                var timePickerDialog = TimePickerDialog(
-                    view.context,
-                    TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                        editTextTimePickerEditDialog.setText("$hourOfDay:$minute")
-                    },
-                    hour,
-                    minute,
-                    true
+
+            //btn save changes
+            var db = Firebase.firestore
+            var auth = Firebase.auth
+            btnSaveDialog.setOnClickListener {
+
+
+
+
+
+                var updated = mapOf(
+                    "name" to editTextTaskTitleEditDialog.text.toString(),
+                    "description" to editTextTaskDescriptionEditDialog.text.toString(),
+                    "dueDate" to chosenDate, // change to chosen date
+//                "time" to chosenTime,
+                    "status" to false,
+
                 )
-                timePickerDialog.show()
+                db.collection("currentUserTasks").document(auth.currentUser?.uid.toString())
+                    .collection("todos")
+                    .document(data[position].id!!).update(updated)
+
+
+                customEditDialog.dismiss()
+
+
             }
 
-//            val db = Firebase.firestore
-//            val auth = Firebase.auth
-            // set on click listener for the add btn in dialog to add edit texts info to firebase
-//            btnAddDialog.setOnClickListener {
-//
-//                println("Add is pressed")
-//                // Create a new user with a first and last name
-//                val todo = hashMapOf(
-//                    "name" to editTextTaskTitle.text.toString(),
-//                    "description" to editTextTaskDescription.text.toString(),
-//                    "dueDate" to Date(year, month, day).toString(),
-//                    "time" to Time(hour, minute, 0).toString(),
-//                    "status" to false
-//
-//                )
-//
-//// Add a new document with a generated ID
-//                db.collection("todos")
-//                    .document(auth.currentUser?.uid.toString())
-//                    .collection("todos1").document()
-//                    .set(todo)
-//                    .addOnFailureListener { e ->
-//
-//                    }
-//                customEditDialog.dismiss()
-//
-//
-//            }
+
+            // btn delete item
+
+            btnDeleteDialog.setOnClickListener {
+
+                db.collection("currentUserTasks").document(auth.currentUser?.uid.toString())
+                    .collection("todos").document(data[position].id!!).delete()
+
+                customEditDialog.dismiss()
+            }
+
+            //close dialog
+            imgViewCloseDialogIconEditDialog.setOnClickListener {
+                customEditDialog.dismiss()
+            }
             customEditDialog.setCanceledOnTouchOutside(true)
             customEditDialog.show()
 
         }
-
     }
 
     override fun getItemCount(): Int {

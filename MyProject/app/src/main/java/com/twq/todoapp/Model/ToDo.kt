@@ -10,6 +10,5 @@ data class ToDo(
     var title:String?,
     var description:String?,
     var dueDate: Date?,
-    var creation: Date?,
     var status: Boolean = false
         ):Serializable
