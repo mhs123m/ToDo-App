@@ -2,46 +2,46 @@ package com.twq.todoapp
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.Dialog
+import android.app.SearchManager
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.twq.todoapp.Adapter.TodayAdapter
 import com.twq.todoapp.Fragments.FragmentAdapter
+import com.twq.todoapp.Fragments.todayAdapter
 import com.twq.todoapp.Model.ToDo
-import java.sql.Time
 import java.util.*
-import java.util.zip.Inflater
 
 class HomeActivity : AppCompatActivity() {
-    lateinit var todayAdapter: TodayAdapter
+
     var todoList = mutableListOf<ToDo>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-
+        val db = Firebase.firestore
+        val auth = Firebase.auth
 
         var viewPager2 = findViewById<ViewPager2>(R.id.mViewPager2)
         var mTabLayout = findViewById<TabLayout>(R.id.mTabLayout)
         var fabBtn = findViewById<FloatingActionButton>(R.id.mfloatingActionButton)
         var mToolBar = findViewById<Toolbar>(R.id.mToolBar)
+
+
 
         var titles = arrayOf("Done", "All TODOs","Pending")
         viewPager2.adapter = FragmentAdapter(this)
@@ -95,7 +95,7 @@ class HomeActivity : AppCompatActivity() {
             var month = c.get(Calendar.MONTH)
             var year = c.get(Calendar.YEAR)
 
-            var choosedDate = Date()
+            var chosenDate = Date()
             editTextDatePicker.setOnClickListener {
 
 
@@ -103,7 +103,7 @@ class HomeActivity : AppCompatActivity() {
                     this,
                     DatePickerDialog.OnDateSetListener { view, year, month, day ->
                         editTextDatePicker.setText("$day/${month + 1}/$year")
-                        choosedDate = Date(year - 1900,month,day)
+                        chosenDate = Date(year-1900,month,day)
 
                     },
                     year,
@@ -117,23 +117,8 @@ class HomeActivity : AppCompatActivity() {
             var minute = c.get(Calendar.MINUTE)
             var seconds = c.get(Calendar.SECOND)
 
-            var chosenTime:String
-            editTextTimePicker.setOnClickListener {
-                var timePickerDialog = TimePickerDialog(this,
-                    TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                        editTextTimePicker.setText("$hourOfDay:$minute")
-                        chosenTime = "$hourOfDay: $minute"
 
-                    },
-                    hour,
-                    minute,
-                    true
-                )
-                timePickerDialog.show()
-            }
 
-            val db = Firebase.firestore
-            val auth = Firebase.auth
             // set on click listener for the add btn in dialog to add edit texts info to firebase
             btnAddDialog.setOnClickListener {
 
@@ -142,9 +127,8 @@ class HomeActivity : AppCompatActivity() {
                 val todo = hashMapOf(
                     "name" to editTextTaskTitle.text.toString(),
                     "description" to editTextTaskDescription.text.toString(),
-                    "dueDate" to choosedDate,
-                    "creation" to (Date(year - 1900, month, day,hour,minute,seconds)),
-//                    "time" to com.twq.todoapp.Adapter.chosenTime,
+                    "dueDate" to chosenDate,
+                    "creation" to (Date(year, month, day,hour,minute,seconds)),
                     "status" to false
 
                 )
@@ -152,12 +136,12 @@ class HomeActivity : AppCompatActivity() {
 
 // Add a new document with a generated ID
 
-                db.collection("todos")
+                db.collection("currentUserTasks")
                     .document(auth.currentUser?.uid.toString())
-                    .collection("todos1").document()
+                    .collection("todos").document()
                     .set(todo)
                     .addOnSuccessListener {
-                         todayAdapter = TodayAdapter(todoList)
+//                         todayAdapter = TodayAdapter(todoList)
 //                        todayAdapter.notifyDataSetChanged()
                     }
                     .addOnFailureListener { e ->
@@ -179,6 +163,11 @@ class HomeActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.tool_bar_mune, menu)
+        val searchItem: MenuItem? = menu?.findItem(R.id.toolbarSearch)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView: SearchView = searchItem!!.actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         return super.onCreateOptionsMenu(menu)
     }
     // listener
@@ -191,7 +180,8 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(settingIntent)
             }
             R.id.toolbarSearch -> {
-                Toast.makeText(this, "filter was clicked", Toast.LENGTH_SHORT).show()
+
+
             }
             R.id.toolbarSort -> {}
         }

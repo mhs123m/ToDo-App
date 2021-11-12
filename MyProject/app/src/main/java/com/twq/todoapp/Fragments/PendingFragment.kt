@@ -32,9 +32,9 @@ class PendingFragment : Fragment() {
 
         var db = Firebase.firestore
         var auth = Firebase.auth
-        db.collection("todos")
+        db.collection("currentUserTasks")
             .document(auth.currentUser?.uid.toString())
-            .collection("todos1")
+            .collection("todos")
             .addSnapshotListener { task, error ->
                 var pending = mutableListOf<ToDo>()
                 if (task != null) {
@@ -46,7 +46,6 @@ class PendingFragment : Fragment() {
                                     document.id, document.getString("name"),
                                     document.getString("description"),
                                     document.getDate("dueDate"),
-                                    document.getDate("creation"),
                                     document.getBoolean("status")!!
                                 )
                             )

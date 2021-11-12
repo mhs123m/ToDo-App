@@ -17,8 +17,8 @@ class HomeViewModel() : ViewModel() {
         var auth = Firebase.auth
 
 
-        db.collection("todos").document(auth.currentUser?.uid.toString())
-            .collection("todos1")
+        db.collection("currentUserTasks").document(auth.currentUser?.uid.toString())
+            .collection("todos")
             .addSnapshotListener { result, error ->
                 var todoList = mutableListOf<ToDo>()
                 if (result != null) {
@@ -28,8 +28,7 @@ class HomeViewModel() : ViewModel() {
                                 document.id,
                                 document.getString("name"),
                                 document.getString("description"),
-                                document.getDate("dueDate")!!,
-                                document.getDate("creation")!!,
+                                document.getDate("dueDate"),
                                 document.getBoolean("status")!!
                             )
                         )

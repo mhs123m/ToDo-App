@@ -14,11 +14,12 @@ import com.twq.todoapp.Adapter.TodayAdapter
 import com.twq.todoapp.Model.ToDo
 import com.twq.todoapp.R
 import java.util.*
-
+lateinit var todayAdapter: TodayAdapter
+lateinit var todoList:MutableList<ToDo>
 class AllToDoFragment : Fragment() {
 
-    lateinit var todayAdapter: TodayAdapter
-    var todoList = mutableListOf<ToDo>()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,15 +29,16 @@ class AllToDoFragment : Fragment() {
         var v = inflater.inflate(R.layout.fragment_alltodo, container, false)
 
 
-        var mRecyclerView = v.findViewById<RecyclerView>(R.id.mRecyclerView)
+         var mRecyclerView = v.findViewById<RecyclerView>(R.id.mRecyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
 
 
         var db = Firebase.firestore
         var auth = Firebase.auth
-        db.collection("todos")
+        todoList = mutableListOf<ToDo>()
+        db.collection("currentUserTasks")
             .document(auth.currentUser?.uid.toString())
-            .collection("todos1")
+            .collection("todos")
             .addSnapshotListener { task, error ->
                 todoList.clear()
                 if (task != null) {
@@ -44,10 +46,10 @@ class AllToDoFragment : Fragment() {
 
                         todoList.add(
                             ToDo(
-                                document.id, document.getString("name"),
+                                document.id,
+                                document.getString("name"),
                                 document.getString("description"),
                                 document.getDate("dueDate"),
-                                document.getDate("creation"),
                                 document.getBoolean("status")!!
                             )
                         )
@@ -58,7 +60,7 @@ class AllToDoFragment : Fragment() {
 
 
 
-                var todayAdapter = TodayAdapter(todoList)
+                 todayAdapter = TodayAdapter(todoList)
                 mRecyclerView.adapter = todayAdapter
 
 //                mRecyclerView.notify

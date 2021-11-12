@@ -12,7 +12,8 @@
         android:id="@+id/toolbarSearch"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="search"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView" />
     <item
         android:id="@+id/toolbarSetting"
         android:icon="@drawable/ic_baseline_settings_24"

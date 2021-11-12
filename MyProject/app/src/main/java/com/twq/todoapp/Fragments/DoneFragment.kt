@@ -32,9 +32,9 @@ class DoneFragment : Fragment() {
 
         var db = Firebase.firestore
         var auth = Firebase.auth
-        db.collection("todos")
+        db.collection("currentUserTasks")
             .document(auth.currentUser?.uid.toString())
-            .collection("todos1")
+            .collection("todos")
             .addSnapshotListener { task, error ->
                 var done = mutableListOf<ToDo>()
                 if (task != null) {
@@ -43,10 +43,10 @@ class DoneFragment : Fragment() {
                         if (document.getBoolean("status")!!) {
                             done.add(
                                 ToDo(
-                                    document.id, document.getString("name"),
+                                    document.id,
+                                    document.getString("name"),
                                     document.getString("description"),
                                     document.getDate("dueDate"),
-                                    document.getDate("creation"),
                                     document.getBoolean("status")!!
                                 )
                             )
