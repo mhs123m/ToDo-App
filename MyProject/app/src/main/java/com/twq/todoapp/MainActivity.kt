@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
         var loginEmail = findViewById<TextInputEditText>(R.id.editTextnputEmailLogin)
         var loginPassword = findViewById<TextInputEditText>(R.id.editTextInputPasswordLogin)
         var loginBtn = findViewById<Button>(R.id.buttonLogin)
-        var gLoginBtn = findViewById<Button>(R.id.buttonGoogleSinein)
-        var fLoginBtn = findViewById<Button>(R.id.buttonFacebookLogin)
         var noAccountTextView = findViewById<TextView>(R.id.textViewNoAccountSignUp)
 
         noAccountTextView.setOnClickListener {
@@ -47,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                             var user = auth.currentUser
                             var i = Intent(this,HomeActivity::class.java)
                             startActivity(i)
+                            finish()
                         } else {
 
                             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT)

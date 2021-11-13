@@ -22,6 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.twq.todoapp.Adapter.TodayAdapter
 import com.twq.todoapp.Fragments.FragmentAdapter
+import com.twq.todoapp.Fragments.mRecyclerView
 import com.twq.todoapp.Fragments.todayAdapter
 import com.twq.todoapp.Model.ToDo
 import java.util.*
@@ -117,8 +118,6 @@ class HomeActivity : AppCompatActivity() {
             var minute = c.get(Calendar.MINUTE)
             var seconds = c.get(Calendar.SECOND)
 
-
-
             // set on click listener for the add btn in dialog to add edit texts info to firebase
             btnAddDialog.setOnClickListener {
 
@@ -168,6 +167,21 @@ class HomeActivity : AppCompatActivity() {
         val searchView: SearchView = searchItem!!.actionView as SearchView
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //search in
+                var searched = todoList.filter { it.title?.toLowerCase()!!.contains(newText!!.toLowerCase()) } as MutableList
+                mRecyclerView.adapter = TodayAdapter(searched)
+                return true
+            }
+
+
+        })
         return super.onCreateOptionsMenu(menu)
     }
     // listener
@@ -183,7 +197,9 @@ class HomeActivity : AppCompatActivity() {
 
 
             }
-            R.id.toolbarSort -> {}
+            R.id.toolbarSort -> {
+
+            }
         }
         return super.onOptionsItemSelected(item)
     }

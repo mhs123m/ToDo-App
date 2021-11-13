@@ -16,6 +16,7 @@ import com.twq.todoapp.R
 import java.util.*
 lateinit var todayAdapter: TodayAdapter
 lateinit var todoList:MutableList<ToDo>
+lateinit var mRecyclerView: RecyclerView
 class AllToDoFragment : Fragment() {
 
 
@@ -29,7 +30,7 @@ class AllToDoFragment : Fragment() {
         var v = inflater.inflate(R.layout.fragment_alltodo, container, false)
 
 
-         var mRecyclerView = v.findViewById<RecyclerView>(R.id.mRecyclerView)
+        mRecyclerView = v.findViewById<RecyclerView>(R.id.mRecyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
 
 
@@ -57,8 +58,6 @@ class AllToDoFragment : Fragment() {
 
                     }
                 }
-
-
 
                  todayAdapter = TodayAdapter(todoList)
                 mRecyclerView.adapter = todayAdapter

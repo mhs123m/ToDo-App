@@ -4,14 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/drawable/btn_signin.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/drawable/checked.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/drawable/custom_checkbox.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/drawable/unchecked.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/font/rubik.xml" value="0.27291666666666664" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_registration.xml" value="0.24270833333333333" />
-        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_registration.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.29180327868852457" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/content_settings.xml" value="0.335" />
         <entry key="app/src/main/res/layout/custom_dialog_add_task.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_dialog_edit_task.xml" value="0.24270833333333333" />

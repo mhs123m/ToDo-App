@@ -1,11 +1,13 @@
 package com.twq.todoapp
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
@@ -24,6 +26,12 @@ class RegistrationActivity : AppCompatActivity() {
         var regConfPass =
             findViewById<TextInputEditText>(R.id.editTextInputConfirmPasswordRegistration)
         var regBtn = findViewById<Button>(R.id.buttonRegister)
+        var tvSignIn = findViewById<TextView>(R.id.textViewSignIn)
+
+        tvSignIn.setOnClickListener {
+            var signinIntent = Intent(this,MainActivity::class.java)
+            startActivity(signinIntent)
+        }
 
         val db = Firebase.firestore
 
