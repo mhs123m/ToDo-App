@@ -11,4 +11,9 @@
     <color name="shrine_pink_900">#F87970</color>
     <color name="shrine_red">#FF3037</color>
     <color name="main_blue">#017BFC</color>
+    <color name="page">#F3D5C0</color>
+    <color name="darkerpage">#D4B499</color>
+    <color name="grey">#889EAF</color>
+    <color name="darkergrey">#506D84</color>
+
 </resources>
