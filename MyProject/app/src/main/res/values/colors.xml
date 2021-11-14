@@ -15,5 +15,12 @@
     <color name="darkerpage">#D4B499</color>
     <color name="grey">#889EAF</color>
     <color name="darkergrey">#506D84</color>
+    <color name="lightBackground">#A4FAF0EA</color>
+    <color name="dark1">#112031</color>
+    <color name="dark2">#152D35</color>
+    <color name="dark3">#345B63</color>
+    <color name="dark4">#D4ECDD</color>
+
+
 
 </resources>

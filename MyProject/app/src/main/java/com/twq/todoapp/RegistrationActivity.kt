@@ -1,10 +1,8 @@
 package com.twq.todoapp
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.TextView
@@ -41,7 +39,8 @@ class RegistrationActivity : AppCompatActivity() {
 
 
 
-            if ((regPass.text.toString() == regConfPass.text.toString()) && (Patterns.EMAIL_ADDRESS.matcher(regEmail.text.toString())
+            if ((regPass.text.toString() == regConfPass.text.toString()) &&
+                (Patterns.EMAIL_ADDRESS.matcher(regEmail.text.toString())
                     .matches()) && (Patterns.PHONE.matcher(regPhone.text.toString())
                     .matches()) && (regPass.text.toString().length > 8)
             ) {

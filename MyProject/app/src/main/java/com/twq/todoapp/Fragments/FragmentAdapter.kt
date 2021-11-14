@@ -11,9 +11,9 @@ class FragmentAdapter(Activity:FragmentActivity):FragmentStateAdapter(Activity) 
 
     override fun createFragment(position: Int): Fragment {
         when(position){
-            0 -> return DoneFragment()
-            1 -> return AllToDoFragment()
-            2 -> return PendingFragment()
+            0 -> return AllToDoFragment()
+            1 -> return PendingFragment()
+            2 -> return DoneFragment()
         }
         return AllToDoFragment()
     }

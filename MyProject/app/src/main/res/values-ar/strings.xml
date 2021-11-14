@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ToDoApp</string>
+    <string name="create_an_account_in">أفتح حساب في</string>
+    <string name="app_name_todo_manager">ToDo Manager</string>
+    <string name="password">كلمة المرور</string>
+    <string name="full_name">الاسم الكامل</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="phone">رقم الجوال</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="create_account">سجل</string>
+    <string name="welcome_to">مرحبا بك</string>
+    <string name="log_in">تسجيل الدخول</string>
+    <string name="google">G</string>
+    <string name="facebook">f</string>
+    <string name="registrationSucceded">Registration Succeeded</string>
+    <string name="failuar">\"Registration failed: \"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="task_title">العنوان</string>
+    <string name="description">الوصف</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">التالي</string>
+    <string name="previous">السابق</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="don_t_have_an_account">لا تمتلك حساباً؟</string>
+    <string name="sign_up">قم بالتسجيل</string>
+    <string name="already_have_an_account">لديك حساب مسبق؟</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="language">اللغات:</string>
+    <string name="dark_theme">الثيم الليلي</string>
+    <string name="sign_out">تسجيل الخروج</string>
+    <string name="share_the_application">شارك التطبيق</string>
+    <string name="contact_developer">تواصل مع المطور</string>
+    <string name="do_more">أنجز اكثر</string>
+    <string name="organize_your_thoughts">نظم أفكارك</string>
+    <string name="powered_by_mh_team">Powered By: MH team</string>
+    <string name="add_new_task">أضف مهمة جديدة</string>
+    <string name="pick_date">اختر تاريخاً</string>
+    <string name="add_task">أضف</string>
+    <string name="save">احفظ</string>
+    <string name="edit_task">تعديل</string>
+    <array name="tabs">
+        <item>الكل</item>
+        <item>جارية</item>
+        <item>تمت</item>
+
+    </array>
+</resources>

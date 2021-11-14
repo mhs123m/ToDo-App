@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
@@ -36,7 +37,7 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
 
     override fun onBindViewHolder(holder: TodayHolder, position: Int) {
         holder.textViewTitleRow.text = data[position].title
-        holder.textViewDescriptionRow.text = data[position].description
+//        holder.textViewDescriptionRow.text = data[position].description
         holder.checkBox!!.isChecked = data[position].status
 
         holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -106,16 +107,24 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
                 view.findViewById<ImageView>(R.id.imageViewCloseEditDialogIcon)
             var editTextDatePickerEditDialog =
                 view.findViewById<TextInputEditText>(R.id.editTextInputDatePickedEditDialog)
-            var editTextTimePickerEditDialog =
-                view.findViewById<TextInputEditText>(R.id.editTextInputTimePickedEditDialog)
             var btnSaveDialog = view.findViewById<Button>(R.id.buttonSaveEditTaskDialog)
             var btnDeleteDialog = view.findViewById<Button>(R.id.buttonDeleteEditTask)
-
             // set edit texts to the current info of
 
             editTextTaskTitleEditDialog.setText(holder.textViewTitleRow.text)
-            editTextTaskDescriptionEditDialog.setText(holder.textViewDescriptionRow.text)
             editTextDatePickerEditDialog.setText(holder.textViewDueDateRow.text)
+            var db = Firebase.firestore
+            var auth = Firebase.auth
+            db.collection("currentUserTasks")
+                .document(auth.currentUser?.uid.toString())
+                .collection("todos")
+                .document(data[position].id.toString())
+                .addSnapshotListener { user, error ->
+                    if (user != null) {
+                        editTextTaskDescriptionEditDialog.setText(user.getString("description"))
+
+                    }
+                }
 
 
 
@@ -139,23 +148,16 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
             }
 
             //btn save changes
-            var db = Firebase.firestore
-            var auth = Firebase.auth
+
             btnSaveDialog.setOnClickListener {
-
-
-
-
-
                 var updated = mapOf(
                     "name" to editTextTaskTitleEditDialog.text.toString(),
                     "description" to editTextTaskDescriptionEditDialog.text.toString(),
-                    "dueDate" to chosenDate, // change to chosen date
-//                "time" to chosenTime,
+                    "dueDate" to chosenDate,
                     "status" to false,
-
                 )
-                db.collection("currentUserTasks").document(auth.currentUser?.uid.toString())
+                db.collection("currentUserTasks")
+                    .document(auth.currentUser?.uid.toString())
                     .collection("todos")
                     .document(data[position].id!!).update(updated)
 
@@ -170,10 +172,25 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
 
             btnDeleteDialog.setOnClickListener {
 
+                var confDialog = AlertDialog.Builder(holder.itemView.context)
+                confDialog.setTitle("Delete Task")
+                confDialog.setMessage("Are you sure you want to delete this task?")
+                confDialog.setPositiveButton("Delete") { dialog , which ->
+
+
                 db.collection("currentUserTasks").document(auth.currentUser?.uid.toString())
                     .collection("todos").document(data[position].id!!).delete()
 
+                    dialog.dismiss()
                 customEditDialog.dismiss()
+
+                }
+                confDialog.setNegativeButton("Cancel") { dialog , which ->
+                    dialog.dismiss()
+                }
+                confDialog.create()
+                confDialog.show()
+
             }
 
             //close dialog
@@ -211,9 +228,9 @@ class TodayAdapter(var data: MutableList<ToDo>) : RecyclerView.Adapter<TodayHold
 class TodayHolder(v: View) : RecyclerView.ViewHolder(v) {
 
     var textViewTitleRow = v.findViewById<TextView>(R.id.textViewTaskTitleRaw)
-    var textViewDescriptionRow = v.findViewById<TextView>(R.id.textViewDescriptionRow)
+//    var textViewDescriptionRow = v.findViewById<TextView>(R.id.textViewDescriptionRow)
     var textViewDueDateRow = v.findViewById<TextView>(R.id.textViewDueDateRow)
-    var textViewTimeRow = v.findViewById<TextView>(R.id.textViewTimeRow)
+//    var textViewTimeRow = v.findViewById<TextView>(R.id.textViewTimeRow)
     var checkBox = v.findViewById<CheckBox>(R.id.checkBoxRowItem)
 
 }

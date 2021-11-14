@@ -27,4 +27,28 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="language">Language:</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="share_the_application">Share the application</string>
+    <string name="contact_developer">Contact Developer</string>
+    <string name="do_more">DO MORE</string>
+    <string name="organize_your_thoughts">Organize Your Thoughts</string>
+    <string name="powered_by_mh_team">Powered By: MH team</string>
+    <string name="add_new_task">ADD NEW TASK</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="add_task">ADD TASK</string>
+    <string name="save">Save</string>
+    <string name="edit_task">EDIT TASK</string>
+    <array name="tabs">
+        <item>ALL</item>
+        <item>PENDDING</item>
+        <item>DONE</item>
+
+    </array>
+
 </resources>

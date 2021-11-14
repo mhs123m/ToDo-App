@@ -44,19 +44,20 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        var titles = arrayOf("Done", "All TODOs","Pending")
+        var titles = arrayOf("All", "Pending","Done")
+        var iconsofTabs = arrayOf(R.drawable.to_do_list,R.drawable.pending,R.drawable.success)
         viewPager2.adapter = FragmentAdapter(this)
+
+
         TabLayoutMediator(mTabLayout, viewPager2) { tab, position ->
             tab.text = titles[position]
+            tab.setIcon(iconsofTabs[position])
         }.attach()
 
 // to tell the app mToolBar is the main toolbar
         setSupportActionBar(mToolBar)
 
         mToolBar.title = "ToDo M"
-
-
-
 
         fabBtn.setOnClickListener {
             var customAddDialog = AlertDialog.Builder(this).create()
@@ -75,18 +76,14 @@ class HomeActivity : AppCompatActivity() {
             var imgViewCloseDialogIcon = view.findViewById<ImageView>(R.id.imageViewCloseAddDialogIcon)
             var editTextDatePicker =
                 view.findViewById<TextInputEditText>(R.id.editTextInputDatePicked)
-            var editTextTimePicker =
-                view.findViewById<TextInputEditText>(R.id.editTextInputTimePicked)
-            var spinnerRepeat = view.findViewById<Spinner>(R.id.spinnerRepeatAddDialog)
+
             var btnAddDialog = view.findViewById<Button>(R.id.buttonAddDialogAddTask)
 
             //close dialog
             imgViewCloseDialogIcon.setOnClickListener {
                 customAddDialog.dismiss()
             }
-            // spinner items
-            var list = arrayOf("No Repeat", "Daily", "Weekly", "Monthly", "Yearly")
-            spinnerRepeat.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
+
 
             //build the calender dialog
 
@@ -162,26 +159,26 @@ class HomeActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.tool_bar_mune, menu)
-        val searchItem: MenuItem? = menu?.findItem(R.id.toolbarSearch)
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView: SearchView = searchItem!!.actionView as SearchView
+//        val searchItem: MenuItem? = menu?.findItem(R.id.toolbarSearch)
+//        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        val searchView: SearchView = searchItem!!.actionView as SearchView
+//
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                //search in
+//                var searched = todoList.filter { it.title?.toLowerCase()!!.contains(newText!!.toLowerCase()) } as MutableList
+//                mRecyclerView.adapter = TodayAdapter(searched)
+//                return true
+//            }
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
 
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                //search in
-                var searched = todoList.filter { it.title?.toLowerCase()!!.contains(newText!!.toLowerCase()) } as MutableList
-                mRecyclerView.adapter = TodayAdapter(searched)
-                return true
-            }
-
-
-        })
+//        })
         return super.onCreateOptionsMenu(menu)
     }
     // listener
@@ -193,13 +190,13 @@ class HomeActivity : AppCompatActivity() {
 
                 startActivity(settingIntent)
             }
-            R.id.toolbarSearch -> {
-
-
-            }
-            R.id.toolbarSort -> {
-
-            }
+//            R.id.toolbarSearch -> {
+//
+//
+//            }
+//            R.id.toolbarSort -> {
+//
+//            }
         }
         return super.onOptionsItemSelected(item)
     }

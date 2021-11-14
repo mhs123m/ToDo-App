@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayoutRow"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/lightBackground">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewRow"
@@ -31,8 +32,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:text="Task title"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik"
+                android:textColor="@color/design_default_color_on_secondary"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/checkBoxRowItem"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,36 +52,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textViewDescriptionRow"
-                android:layout_width="154dp"
-                android:layout_height="47dp"
+                android:id="@+id/textViewDueDateRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="task description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/checkBoxRowItem"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTaskTitleRaw" />
 
-            <TextView
-                android:id="@+id/textViewDueDateRow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="40dp"
-                android:text="Due Date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewTimeRow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="40dp"
-                android:text="Time"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDueDateRow" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
